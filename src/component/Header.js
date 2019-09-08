@@ -59,7 +59,7 @@ class Header extends Component {
         return (
             <div>
 				<AppBar position="static">
-					<Toolbar>
+					<Toolbar variant="dense">
 						<IconButton 
 							className={classes.menuButton} color="inherit" 
 							aria-label="Menu" onClick={this.handleDrawerOpen}
