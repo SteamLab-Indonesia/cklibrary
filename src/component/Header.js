@@ -13,7 +13,9 @@ import {
 	ListItemIcon,
 	ListItemText
 } from '@material-ui/core';
-import { Menu, ChevronLeft, ChevronRight, MoveToInbox, Mail } from '@material-ui/icons/';
+import PlusSign from '@material-ui/icon/post_add'
+import Search from '@material-ui/icon/search'
+import Exit from'@material-ui/icon/exit_to_app'
 
 const drawerWidth = 240;
 
@@ -88,18 +90,18 @@ class Header extends Component {
 					</div>
 					<Divider />
 					<List>
-						{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+					{['Input data', 'View Data'].map((text, index) => (
 						<ListItem button key={text}>
-						<ListItemIcon>{index % 2 === 0 ? <MoveToInbox /> : <Mail />}</ListItemIcon>
+						<ListItemIcon>{index % 2 === 0 ? <PlusSign /> : <Search />}</ListItemIcon>
 						<ListItemText primary={text} />
 						</ListItem>
 						))}
 					</List>
 					<Divider />
 					<List>
-						{['All mail', 'Trash', 'Spam'].map((text, index) => (
+						{['Logout'].map((text, index) => (
 						<ListItem button key={text}>
-						<ListItemIcon>{index % 2 === 0 ? <MoveToInbox /> : <Mail />}</ListItemIcon>
+						<ListItemIcon>{index % 2 === 0 ? <Exit />}</ListItemIcon>
 						<ListItemText primary={text} />
 						</ListItem>
 						))}

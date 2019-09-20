@@ -60,7 +60,7 @@ class Attendance extends Component {
 								>
 									<Grid item>
                                         <TextField
-                                            type="datetime-local"
+                                            type="date"
                                             value={this.state.clockDate}
                                             style={GlobalStyles.textField}
                                             InputLabelProps={{
