@@ -1,8 +1,20 @@
 import React, {Component} from 'react';
 import {Button, TextField, Typography} from '@material-ui/core';
-import GlobalStyles from '../styles';
+import GlobalStyles from '../styles/index';
+import {Login} from '../libs/firebase'
 
 class Login extends Component {
+
+State={
+   email:"",
+   password:"" 
+}
+handleEmail=(event)=>{
+    this.setState({date: event.target.value});
+}
+handlePassword=(event)=>{
+    this.setState({date: event.target.value});
+}
 
     render() {
         return (
@@ -16,18 +28,24 @@ class Login extends Component {
                         </div>
                         <div style={styles.textField}>
                             <TextField
+                                type="email"
                                 style={GlobalStyles.spacing}
                                 placeholder="Email address"
+                                onChange={this.handleEmail}
                             />
                             <TextField
                                 type="password"
                                 style={GlobalStyles.spacing}
                                 placeholder="Password"
+                                onChange={this.handlePassword}
                             />
                         </div>
                     </div>
                     <div>
-                        <Button variant="contained" style={GlobalStyles.primaryBtn}>
+                        <Button 
+                        variant="contained" 
+                        style={GlobalStyles.primaryBtn}
+                        onClick={this.Login}>
                             Sign In
                         </Button>
                     </div>
