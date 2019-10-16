@@ -1,30 +1,45 @@
 import React, {Component} from 'react'
 import {Table, TableBody, TableCell, TableHead, TableRow, Icon, Button, TextField} from '@material-ui/core'
 import GlobalStyles from '../styles';
-import { getUser} from '../libs/firebase'
+import { getUser, callDate, firebase} from '../libs/firebase'
 
 const month=["july","august","september","october","november","december"]
-const numberstudents = [20, 10, 5, 25, 15, 30];
 
-getDate = () => {
+function getDate(){
     let dateArray = [];
     for(let i = 1; i <= 31; ++i)
         dateArray.push(i);
     return dateArray;
 }
-class ViewAttendance extends Component{
 
+class ViewAttendance extends Component{
+    componenDidMount=()=>{
+        callDate().then((data) => {
+            // console.log(data)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+    
     render(){
+        callDate().then((data) => {
+            console.log(data)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        
         return(
-            <div style={GlobalStyles.container}>
-                <Table style={GlobalStyles.table}>
+            <div >
+                <Table >
                    <TableHead style={GlobalStyles.tablehead}>
                        <TableRow>
                            <TableCell>Date</TableCell>
                             {
-                                this.state.students.map((month) => {
+                                month.map((item) => {
                                     return (
-                                            <TableCell>{month}</TableCell>
+                                            <TableCell>{item}</TableCell>
                                     )
                                 })
                             }
@@ -37,11 +52,6 @@ class ViewAttendance extends Component{
                                     <TableRow>
                                         <TableCell>{item}</TableCell>
                                         {
-                                            numberstudents.map((atItem) => {
-                                                return (
-                                                    <TableCell>{atItem}</TableCell>
-                                                )
-                                            })
                                         }
                                     </TableRow>
                                 )

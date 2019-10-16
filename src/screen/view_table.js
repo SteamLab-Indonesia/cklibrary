@@ -3,7 +3,7 @@ import {Table, TableBody, TableCell, TableHead, TableRow, Icon, Button, TextFiel
 import GlobalStyles from '../styles';
 import { getUser } from '../libs/firebase';
 
-class Managestudents extends Component{
+class StudentTable extends Component{
 
     componentDidMount = () => {
         getUser().then((data) => {
@@ -47,4 +47,3 @@ class Managestudents extends Component{
 }
 
 export default StudentTable
-//
