@@ -26,10 +26,6 @@ const globalStyle = {
         width:'400px',
         marginTop:16,
     },
-    tablehead:{
-        backgroundColor:'blue',
-        fontColor:'white'
-    }
 
 }
 

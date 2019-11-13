@@ -53,8 +53,8 @@ export function callDate(){
     return new Promise((resolve, reject) => {
         const db=firebase.firestore();
         let startDate= new Date('2019-09-01 00:00:00')
-        let endDate= new Date('2019-10-01 21:59:59')
-        let endOfMonth = new Date(2019, 11, 0);
+        let endDate= new Date('2019-12-01 21:59:59')
+        let endOfMonth = new Date(2019, 12, 0);
         console.log(endOfMonth.toDateString());
 
         console.log('query date:');
@@ -79,6 +79,31 @@ export function callDate(){
         .catch((err) => {
             reject(err);
         });    
+    })
+}
+
+export function ArrangeDate(){
+    return new Promise((resolve, reject) => {
+        let attendance = []
+        for (let x=0; x<12; x++){
+            attendance[x]=[]
+            for (let y=0; y<31; y++){
+                attendance[x][y]=0
+            }
+        }
+        callDate().then((data) => {
+            for (let i =0; i < data.length; ++i)
+            {
+                let statData = data[i].data.Date.toDate()
+                console.log(statData)
+                attendance[statData.getMonth()][statData.getDate()-1]++
+            }
+            console.log(attendance)
+            resolve(attendance)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     })
 }
 

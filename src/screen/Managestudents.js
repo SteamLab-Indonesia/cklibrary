@@ -125,11 +125,9 @@ const styles={
         size: 20,
 
     },
-    table:{
-        
+    table:{   
     }
-    
 }
 
 export default Managestudents
-//
+

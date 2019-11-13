@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {Table, TableBody, TableCell, TableHead, TableRow, Icon, Button, TextField} from '@material-ui/core'
 import GlobalStyles from '../styles';
-import { getUser, callDate, firebase} from '../libs/firebase'
+import { getUser, callDate, ArrangeDate,firebase} from '../libs/firebase'
 
-const month=["july","august","september","october","november","december"]
+
+const gMonth=["Jan", "Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 
 function getDate(){
     let dateArray = [];
@@ -13,9 +14,14 @@ function getDate(){
 }
 
 class ViewAttendance extends Component{
-    componenDidMount=()=>{
-        callDate().then((data) => {
-            // console.log(data)
+
+    state = {
+        startMonth: 6,
+        attendance:[[]]
+    }
+    componentDidMount=()=>{
+        ArrangeDate().then((data) => {
+            this.setState({attendance:data})
         })
         .catch((err) => {
             console.log(err);
@@ -23,21 +29,25 @@ class ViewAttendance extends Component{
     }
     
     render(){
-        callDate().then((data) => {
-            console.log(data)
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-        
+        let attendance=this.state.attendance;
+        let start = this.state.startMonth;
+        let month = gMonth.slice(start, gMonth.length-1);
+        let sliceAttendance = attendance.slice(start, gMonth.length - 1);
+        let dateArray = getDate();
+        console.log('==> origin attendance');
+        console.log(attendance);
+        console.log('==> slice month');
+        console.log(month);
+        console.log('==> slice attendance');
+        console.log(sliceAttendance);
         return(
             <div >
                 <Table >
-                   <TableHead style={GlobalStyles.tablehead}>
+                   <TableHead>
                        <TableRow>
                            <TableCell>Date</TableCell>
                             {
-                                month.map((item) => {
+                                month.map((item, index) => {
                                     return (
                                             <TableCell>{item}</TableCell>
                                     )
@@ -47,15 +57,31 @@ class ViewAttendance extends Component{
                     </TableHead>
                     <TableBody>
                         {
-                            getDate().map((item) => {
-                                return (
+                            dateArray.map((item,date)=>{
+                                return(
                                     <TableRow>
-                                        <TableCell>{item}</TableCell>
+                                        <TableCell>
+                                            {item}
+                                        </TableCell>
                                         {
+                                                month.map((item, index) => {
+                                                if (sliceAttendance.length > 0 && sliceAttendance[index] &&
+                                                    sliceAttendance[index][date] > 0)
+                                                {
+                                                    return (
+                                                        <TableCell>{sliceAttendance[index][date]}</TableCell>
+                                                    )
+                                                }
+                                                else{
+                                                    return <TableCell />
+                                                }
+
+                                            })
                                         }
                                     </TableRow>
                                 )
                             })
+                            
                         }
                     </TableBody>
                 </Table>
@@ -64,4 +90,3 @@ class ViewAttendance extends Component{
     }
 }
 export default ViewAttendance;
-//
