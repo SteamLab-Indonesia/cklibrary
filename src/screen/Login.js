@@ -4,7 +4,7 @@ import GlobalStyles from '../styles/index';
 import {Login} from '../libs/firebase'
 //
 
-class Login extends Component {
+class LoginScreen extends Component {
 
 State={
    email:"",
@@ -95,4 +95,4 @@ const styles = {
         padding: 20
     }
 }
-export default Login;
+export default LoginScreen;
