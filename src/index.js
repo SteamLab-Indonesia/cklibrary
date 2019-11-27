@@ -7,10 +7,11 @@ import Attendance from './screen/Attendance'
 import Managestudents from './screen/Managestudents'
 import Viewattendance from './screen/view_attendance'
 import StudentTable from './screen/view_table'
+import Render from './component/Render'
 
 import './index.css';
 
 ReactDOM.render(
-  <Viewattendance/>,
+  <Render/>,
   document.getElementById('root')
 );
