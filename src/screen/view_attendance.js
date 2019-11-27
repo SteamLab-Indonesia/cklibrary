@@ -41,7 +41,7 @@ class ViewAttendance extends Component{
         console.log('==> slice attendance');
         console.log(sliceAttendance);
         return(
-            <div >
+            <div style={{marginTop: 80}}>
                 <Table >
                    <TableHead>
                        <TableRow>
