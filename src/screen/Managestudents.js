@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Table, TouchableOpacity, TableBody, TableCell, TableHead, TableRow, Icon, Button, TextField} from '@material-ui/core'
+import {Table, Fab, TableBody, TableCell, TableHead, TableRow, Icon, Button, TextField} from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,7 +13,10 @@ import {addStudent, getUser, getStudent, deleteStudent} from '../libs/firebase'
 class Managestudents extends Component{
 
     state={
-        open:false
+        open:false,
+        students: [],
+        new_name: '',
+        new_class: ''
     }
 
     handleClickOpen =()=> {
@@ -25,15 +28,44 @@ class Managestudents extends Component{
     }
 
     handleDelete=(student_id)=>{
-        getStudent()
-        deleteStudent()
+        deleteStudent(student_id).then(() => {
+            setTimeout(this.refreshData(), 2000);
+        })
     }
 
+    onAddName = (event) => {
+        this.setState({
+            new_name: event.target.value
+        })
+    }
+
+    onAddClass = (event) => {
+        this.setState({
+            new_class: event.target.value
+        })
+    }
+
+    onAddStudent = () => {
+        console.log(this.state.new_name);
+        console.log(this.state.new_class);
+        addStudent(this.state.new_name, this.state.new_class);
+        this.handleClose();
+        setTimeout(this.refreshData(), 2000);
+    }
+
+    refreshData = () => {
+        getStudent().then((studentData) => {
+            this.setState({
+                students: studentData
+            })
+        });
+    }
     componentDidMount=()=>{
-        getUser()
+        this.refreshData();
     }
 
     render(){
+        console.log(this.state.students);
         let open = this.state.open;
         return(
             <div>
@@ -44,6 +76,7 @@ class Managestudents extends Component{
                                 <TableCell align="center">No.</TableCell>
                                 <TableCell align="center">Name</TableCell>
                                 <TableCell align="center">Class</TableCell>
+                                <TableCell align="center">Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -54,9 +87,11 @@ class Managestudents extends Component{
                                             <TableCell>{index+1}</TableCell>
                                             <TableCell>{item.name}</TableCell>
                                             <TableCell>{item.class}</TableCell>
-                                            <TouchableOpacity>
-                                            <Icon icon={DeleteIcon} onClick={this.handleDelete}/>
-                                            </TouchableOpacity>
+                                            <TableCell>
+                                                <Fab color="primary" size="small" aria-label="delete" onClick={()=>this.handleDelete(item.student_id)}>
+                                                    <DeleteIcon />
+                                                </Fab>
+                                            </TableCell>
                                         </TableRow>
                                     )
                                 })
@@ -66,42 +101,42 @@ class Managestudents extends Component{
                     </Table>
                 </div>
                 <div style={styles.iconarea}>
-                    <TouchableOpacity onClick={this.handleClickOpen}>
-                    <Icon icon={AddIcon} ></Icon>
-                            <Dialog open={open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-                            <DialogTitle id="form-dialog-title">Adding students</DialogTitle>
-                            <DialogContent>
-                            <DialogContentText>
-                                Input name and class of students
-                            </DialogContentText>
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="grade"
-                                label="grade"
-                                type="grade"
-                                fullWidth
-                            />
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="grade"
-                                label="grade"
-                                type="grade"
-                                fullWidth
-                            />
-                            </DialogContent>
-                            <DialogActions>
-                            <Button onClick={this.handleClose} color="primary">
-                                Cancel
-                            </Button>
-                            <Button onClick={this.addStudent} color="primary">
-                                Add
-                            </Button>
-                            </DialogActions>
-                        </Dialog>
-                    </TouchableOpacity>
+                    <Fab onClick={this.handleClickOpen} size="small">
+                        <AddIcon />
+                    </Fab>
                 </div>
+                <Dialog open={open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Adding students</DialogTitle>
+                    <DialogContent>
+                    <DialogContentText>
+                        Input name and class of students
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Name"
+                        fullWidth
+                        onChange={this.onAddName}
+                    />
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="class"
+                        label="Class"
+                        fullWidth
+                        onChange={this.onAddClass}
+                    />
+                    </DialogContent>
+                    <DialogActions>
+                    <Button onClick={this.handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={this.onAddStudent} color="primary">
+                        Add
+                    </Button>
+                    </DialogActions>
+                </Dialog>                
             </div>
         )
     }
@@ -129,5 +164,5 @@ const styles={
     }
 }
 
-export default Managestudents
+export default Managestudents;
 

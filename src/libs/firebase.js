@@ -148,8 +148,8 @@ export function addStudent(name, grade){
     return new Promise((resolve,reject)=>{
         const db=firebase.firestore();
         db.collection('students').add({
-            name,
-            grade
+            Name: name,
+            Class: grade
         })
         .then(()=>{
             resolve('success')
@@ -161,22 +161,32 @@ export function addStudent(name, grade){
 }
 
 export function getStudent(){
-    const db=firebase.firestore()
-    db.collection("students").get()
-    .then((snapshot)=>{
-        let data=[];
-        for(let i=0; i < snapshot.docs.length; i++){
-            data.push({
-                student_id:snapshot.docs[i].id,
-                name:snapshot.docs[i].data().name
-            })
-        }
+    return new Promise((resolve, reject) => {
+        const db=firebase.firestore()
+        db.collection("students").get()
+        .then((snapshot)=>{
+            let data=[];
+            for(let i=0; i < snapshot.docs.length; i++){
+                console.log(snapshot.docs[i].data());
+                data.push({
+                    student_id:snapshot.docs[i].id,
+                    name:snapshot.docs[i].data().Name,
+                    class:snapshot.docs[i].data().Class
+                })
+            }
+            resolve(data);
+        })
+        .catch((err) => {
+            reject(err);
+        })
     })
+
 }
 export function deleteStudent(student_id){
+    console.log('delete ' + student_id);
     return new Promise((resolve,reject)=>{
         const db=firebase.firestore();
-        db.collection('students').docs(student_id).delete()
+        db.collection('students').doc(student_id).delete()
         .then(()=>{
             resolve('success');
         })
