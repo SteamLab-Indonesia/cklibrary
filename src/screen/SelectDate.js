@@ -7,22 +7,22 @@ import { addAttendance } from '../libs/firebase';
 class SelectDate extends Component{
 
     state = {
-        date:[],
+        date: new Date().toISOString().split('T')[0],
         day:''
     }
     handleDate=(event)=>{
-        console.log('date = ' + event.target.value);
         this.setState({date: event.target.value});
     }
     
-    handleSubmit(){
-        if (this.date='School day') {
-            addAttendance()
-          }
-        if (this.date='Weekends') {
+    handleSubmit= () => {
+        if (this.state.day == 'schoolday') {
+            // addAttendance();
+            this.props.history.push('/viewattendance');
+        }
+        else if (this.state.day =='weekend') {
             
         }
-        if (this.date='Holiday') {
+        else if (this.state.day =='holiday') {
             
         }
         else{
@@ -30,7 +30,7 @@ class SelectDate extends Component{
         }
     }
     handleChange=(event)=>{
-        this.date=event.target.value
+        this.setState({day: event.target.value})
     }
 
     render(){
@@ -40,7 +40,7 @@ class SelectDate extends Component{
                     <Typography> Select Date:</Typography>
                     <TextField
                         type="date"
-                        value={this.state.clockDate}
+                        value={this.state.date}
                         style={GlobalStyles.textField}
                         InputLabelProps={{
                             shrink: true,
@@ -52,9 +52,9 @@ class SelectDate extends Component{
                     <Typography>Day:</Typography>
                     <FormControl margin="normal">
                         <RadioGroup name="selectday"onChange={this.handleChange} color="primary">
-                            <FormControlLabel control={<Radio/>} id="School day" value="schoolday"/>
-                            <FormControlLabel control={<Radio/>} id="Weekends" value="weekend"/>
-                            <FormControlLabel control={<Radio/>} id="Holiday" value="holiday"/>
+                            <FormControlLabel control={<Radio/>} id="School day" value="schoolday" label="School day"/>
+                            <FormControlLabel control={<Radio/>} id="Weekends" value="weekend" label="Weekends"/>
+                            <FormControlLabel control={<Radio/>} id="Holiday" value="holiday" label="Holiday"/>
                         </RadioGroup>
                     </FormControl>
                 </div>

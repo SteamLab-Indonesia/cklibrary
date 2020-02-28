@@ -8,10 +8,13 @@ import Managestudents from './screen/Managestudents'
 import Viewattendance from './screen/view_attendance'
 import StudentTable from './screen/view_table'
 import Render from './component/Render'
+import {BrowserRouter} from 'react-router-dom';
 
 import './index.css';
 
 ReactDOM.render(
-  <Render/>,
+  <BrowserRouter>
+    <Render/>
+  </BrowserRouter>,
   document.getElementById('root')
 );
