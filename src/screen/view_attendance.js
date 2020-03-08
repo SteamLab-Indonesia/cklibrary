@@ -16,7 +16,7 @@ function getDate(){
 class ViewAttendance extends Component{
 
     state = {
-        startMonth: 6,
+        startMonth: 0,
         attendance:[[]]
     }
     componentDidMount=()=>{
@@ -31,8 +31,8 @@ class ViewAttendance extends Component{
     render(){
         let attendance=this.state.attendance;
         let start = this.state.startMonth;
-        let month = gMonth.slice(start, gMonth.length-1);
-        let sliceAttendance = attendance.slice(start, gMonth.length - 1);
+        let month = gMonth.slice(start, gMonth.length);
+        let sliceAttendance = attendance.slice(start, gMonth.length);
         let dateArray = getDate();
         console.log('==> origin attendance');
         console.log(attendance);

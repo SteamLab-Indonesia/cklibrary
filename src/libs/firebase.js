@@ -52,17 +52,17 @@ if (firebase.apps.length === 0){
 export function callDate(){
     return new Promise((resolve, reject) => {
         const db=firebase.firestore();
-        let startDate= new Date('2019-09-01 00:00:00')
-        let endDate= new Date('2019-12-01 21:59:59')
-        let endOfMonth = new Date(2019, 12, 0);
+        let startDate= new Date('2020-01-01 00:00:00')
+        let endDate= new Date('2020-12-31 21:59:59')
+        let endOfMonth = new Date(2020, 12, 0);
         console.log(endOfMonth.toDateString());
 
         console.log('query date:');
         console.log(startDate);
         console.log(endDate);
         db.collection('attendance')
-        .where('Date','>=',startDate)
-        .where('Date','<=',endDate)
+        .where('date','>=',startDate)
+        .where('date','<=',endDate)
         .get()
         .then((snapshot)=>{
             let data = [];
@@ -94,7 +94,7 @@ export function ArrangeDate(){
         callDate().then((data) => {
             for (let i =0; i < data.length; ++i)
             {
-                let statData = data[i].data.Date.toDate()
+                let statData = data[i].data.date.toDate()
                 console.log(statData)
                 attendance[statData.getMonth()][statData.getDate()-1]++
             }
@@ -151,6 +151,22 @@ export function addStudent(name, grade){
             Name: name,
             Class: grade
         })
+        .then((data)=>{
+            resolve(data);
+        })
+        .catch((err) =>{
+            reject(err)
+        })
+    })
+}
+
+export function studentAttendance(student_id, currentdate){
+    return new Promise((resolve,reject)=>{
+        const db=firebase.firestore();
+        db.collection('attendance').add({
+            date: currentdate,
+            students: db.collection('students').doc(student_id)
+        })
         .then(()=>{
             resolve('success')
         })
@@ -159,7 +175,6 @@ export function addStudent(name, grade){
         })
     })
 }
-
 export function getStudent(){
     return new Promise((resolve, reject) => {
         const db=firebase.firestore()
@@ -196,12 +211,12 @@ export function deleteStudent(student_id){
     })
 }
 
-export function addAttendance(date){
+export function addAttendance(currentdate){
     let students=[]
     return new Promise((resolve,reject)=>{
         const db=firebase.firestore();
         db.collection('attendance').add({
-            date, students
+            currentdate, students
         })
         .then(()=>{
             resolve('success')

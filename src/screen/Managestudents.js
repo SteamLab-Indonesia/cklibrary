@@ -7,7 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {addStudent, getUser, getStudent, deleteStudent} from '../libs/firebase'
+import {addStudent, getUser, getStudent, deleteStudent, studentAttendance}  from '../libs/firebase'
 
 
 class Managestudents extends Component{
@@ -48,13 +48,22 @@ class Managestudents extends Component{
     onAddStudent = () => {
         console.log(this.state.new_name);
         console.log(this.state.new_class);
-        addStudent(this.state.new_name, this.state.new_class);
-        this.handleClose();
-        setTimeout(this.refreshData(), 2000);
+        addStudent(this.state.new_name, this.state.new_class)
+        .then((data) => {
+            console.log(data);
+            let date = new Date();
+            if (this.props.match.params.date)
+                date = new Date(this.props.match.params.date);
+            studentAttendance(data.id, date);
+            this.handleClose();
+            setTimeout(this.refreshData(), 2000);
+        })
+
     }
 
     refreshData = () => {
         getStudent().then((studentData) => {
+            console.log(studentData);
             this.setState({
                 students: studentData
             })

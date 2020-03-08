@@ -7,17 +7,16 @@ import { addAttendance } from '../libs/firebase';
 class SelectDate extends Component{
 
     state = {
-        date: new Date().toISOString().split('T')[0],
-        day:''
+        currentdate: new Date().toISOString().split('T')[0],
+        day:'',
     }
     handleDate=(event)=>{
-        this.setState({date: event.target.value});
+        this.setState({currentdate: event.target.value});
     }
     
     handleSubmit= () => {
-        if (this.state.day == 'schoolday') {
-            // addAttendance();
-            this.props.history.push('/viewattendance');
+        if (this.state.day == 'schoolday') {            
+            this.props.history.push('/managestudents/'+ this.state.currentdate);
         }
         else if (this.state.day =='weekend') {
             
@@ -28,6 +27,7 @@ class SelectDate extends Component{
         else{
             alert('Please fill in the form')
         }
+        return(this.state.currentdate)
     }
     handleChange=(event)=>{
         this.setState({day: event.target.value})
@@ -40,7 +40,7 @@ class SelectDate extends Component{
                     <Typography> Select Date:</Typography>
                     <TextField
                         type="date"
-                        value={this.state.date}
+                        value={this.state.currentdate}
                         style={GlobalStyles.textField}
                         InputLabelProps={{
                             shrink: true,

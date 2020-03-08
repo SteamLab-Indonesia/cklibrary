@@ -15,7 +15,7 @@ class Navigation extends Component {
                     <Route exact path='/' component={Login}/>
                     <Route path='/dashboard' component={Dashboard}/>
                     <Route path='/selectdate' component={SelectDate}/>
-                    <Route path='/managestudents' component={ManageStudent}/>
+                    <Route path='/managestudents/:date' component={ManageStudent}/>
                     <Route path='/viewattendance' component={ViewAttendance}/>
                 </Switch>
             </Router>
