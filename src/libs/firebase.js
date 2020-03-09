@@ -175,6 +175,60 @@ export function studentAttendance(student_id, currentdate){
         })
     })
 }
+
+export function getAttendanceStudent(date) {
+    return new Promise((resolve, reject) => {
+        const db=firebase.firestore();
+        console.log(date);
+        if (!date)
+        {
+            console.log('use today date');
+        }            
+        let searchDate = new Date(date);
+        let startDate= new Date((searchDate.getYear()+1900) + '-' + 
+            (searchDate.getMonth()+1) + '-' + searchDate.getDate() + ' 00:00:00');
+        let endDate= new Date((searchDate.getYear()+1900) + '-' + 
+            (searchDate.getMonth()+1) + '-' + searchDate.getDate() + ' 23:59:59');
+        db.collection('attendance')
+        .where('date','>=',startDate)
+        .where('date','<=',endDate)
+        .get()
+        .then((snapshot)=>{
+            let students = [];
+            for(let i=0; i < snapshot.docs.length; ++i)
+            {
+                let data = snapshot.docs[i].data();
+                if (data && data.students)
+                {
+                    if (! students.includes(data.students))
+                    {
+                        students.push(data.students.get());
+                    }
+                }
+
+            }
+            Promise.all(students).then((result) => {
+                let all_data = []
+                for (let i=0; i < result.length; ++i)
+                {
+                    let item = {
+                        student_id: result[i].id,
+                        name: result[i].data().Name,
+                        class: result[i].data().Class
+                    };
+                    all_data.push(item);
+                }
+                resolve(all_data);
+            })
+            .catch((err)=> reject(err));
+            
+        })
+        .catch((err) => {
+            reject(err);
+        });    
+    })
+}
+
 export function getStudent(){
     return new Promise((resolve, reject) => {
         const db=firebase.firestore()

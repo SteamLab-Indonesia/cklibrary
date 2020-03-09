@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Table, Fab, TableBody, TableCell, TableHead, TableRow, Icon, Button, TextField} from '@material-ui/core'
+import {Table, Fab, TableBody, TableCell, TableHead, TableRow, Button, TextField} from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,7 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {addStudent, getUser, getStudent, deleteStudent, studentAttendance}  from '../libs/firebase'
+import {addStudent, getAttendanceStudent, deleteStudent, studentAttendance}  from '../libs/firebase'
 
 
 class Managestudents extends Component{
@@ -50,7 +50,6 @@ class Managestudents extends Component{
         console.log(this.state.new_class);
         addStudent(this.state.new_name, this.state.new_class)
         .then((data) => {
-            console.log(data);
             let date = new Date();
             if (this.props.match.params.date)
                 date = new Date(this.props.match.params.date);
@@ -62,8 +61,10 @@ class Managestudents extends Component{
     }
 
     refreshData = () => {
-        getStudent().then((studentData) => {
-            console.log(studentData);
+        let date = new Date();
+        if (this.props.match && this.props.match.params && this.props.match.params.date)
+            date = this.props.match.params.date;
+        getAttendanceStudent(date).then((studentData) => {
             this.setState({
                 students: studentData
             })
@@ -74,7 +75,6 @@ class Managestudents extends Component{
     }
 
     render(){
-        console.log(this.state.students);
         let open = this.state.open;
         return(
             <div>
@@ -92,7 +92,7 @@ class Managestudents extends Component{
                             {
                                 this.state.students.map((item,index) => {
                                     return (
-                                        <TableRow>
+                                        <TableRow key={index}>
                                             <TableCell>{index+1}</TableCell>
                                             <TableCell>{item.name}</TableCell>
                                             <TableCell>{item.class}</TableCell>
