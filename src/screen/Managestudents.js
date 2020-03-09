@@ -94,8 +94,8 @@ class Managestudents extends Component{
                                     return (
                                         <TableRow key={index}>
                                             <TableCell>{index+1}</TableCell>
-                                            <TableCell>{item.name}</TableCell>
-                                            <TableCell>{item.class}</TableCell>
+                                            <TableCell style={styles.nameStyle}>{item.name}</TableCell>
+                                            <TableCell style={styles.gradeStyle}>{item.class}</TableCell>
                                             <TableCell>
                                                 <Fab color="primary" size="small" aria-label="delete" onClick={()=>this.handleDelete(item.student_id)}>
                                                     <DeleteIcon />
@@ -168,6 +168,12 @@ const styles={
     icon:{
         size: 20,
 
+    },
+    nameStyle: {
+        textTransform: 'capitalize'
+    },
+    gradeStyle: {
+        textTransform: 'uppercase'
     },
     table:{   
     }

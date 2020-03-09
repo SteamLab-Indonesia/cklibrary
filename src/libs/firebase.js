@@ -147,16 +147,30 @@ export function getUser(date){
 export function addStudent(name, grade){
     return new Promise((resolve,reject)=>{
         const db=firebase.firestore();
-        db.collection('students').add({
-            Name: name,
-            Class: grade
+
+        db.collection('students')
+        .where('Name', '==', name.toLowerCase())
+        .where('Class', '==', grade.toLowerCase())
+        .get().then((data) => {
+            if (data.empty)
+            {
+                db.collection('students').add({
+                    Name: name.toLowerCase(),
+                    Class: grade.toLowerCase()
+                })
+                .then((data)=>{
+                    resolve(data);
+                })
+                .catch((err) =>{
+                    reject(err)
+                })
+            }
+            else
+            {
+                resolve(data.docs[0]);
+            }
         })
-        .then((data)=>{
-            resolve(data);
-        })
-        .catch((err) =>{
-            reject(err)
-        })
+
     })
 }
 
