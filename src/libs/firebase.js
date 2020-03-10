@@ -49,12 +49,14 @@ if (firebase.apps.length === 0){
 //     // Privacy policy url.
 //     privacyPolicyUrl: '<your-privacy-policy-url>'
 //   };
-export function callDate(){
+export function callDate(year){
     return new Promise((resolve, reject) => {
         const db=firebase.firestore();
-        let startDate= new Date('2020-01-01 00:00:00')
-        let endDate= new Date('2020-12-31 21:59:59')
-        let endOfMonth = new Date(2020, 12, 0);
+        if (!year)
+            year = new Date().getFullYear();
+        let startDate= new Date(year + '-01-01 00:00:00')
+        let endDate= new Date(year + '-12-31 21:59:59')
+        let endOfMonth = new Date(year, 12, 0);
         console.log(endOfMonth.toDateString());
 
         console.log('query date:');
@@ -92,13 +94,14 @@ export function ArrangeDate(){
             }
         }
         callDate().then((data) => {
+            // console.log('get attendance data, length: '+data.length);
             for (let i =0; i < data.length; ++i)
             {
                 let statData = data[i].data.date.toDate()
-                console.log(statData)
+                // console.log(statData)
                 attendance[statData.getMonth()][statData.getDate()-1]++
             }
-            console.log(attendance)
+            // console.log(attendance)
             resolve(attendance)
         })
         .catch((err) => {

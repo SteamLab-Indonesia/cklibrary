@@ -49,7 +49,7 @@ class ViewAttendance extends Component{
                             {
                                 month.map((item, index) => {
                                     return (
-                                            <TableCell>{item}</TableCell>
+                                            <TableCell key={item}>{item}</TableCell>
                                     )
                                 })
                             }
@@ -59,7 +59,7 @@ class ViewAttendance extends Component{
                         {
                             dateArray.map((item,date)=>{
                                 return(
-                                    <TableRow>
+                                    <TableRow key={date}>
                                         <TableCell>
                                             {item}
                                         </TableCell>
@@ -69,11 +69,11 @@ class ViewAttendance extends Component{
                                                     sliceAttendance[index][date] > 0)
                                                 {
                                                     return (
-                                                        <TableCell>{sliceAttendance[index][date]}</TableCell>
+                                                        <TableCell key={index}>{sliceAttendance[index][date]}</TableCell>
                                                     )
                                                 }
                                                 else{
-                                                    return <TableCell />
+                                                    return <TableCell key={index}/>
                                                 }
 
                                             })
